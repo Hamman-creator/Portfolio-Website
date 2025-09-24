@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+  <h1 class="fw-bold mb-4">Experience</h1>
+  <div class="row g-4">
+    {% for exp in experiences %}
+      <div class="col-sm-6 col-md-4">
+        <div class="card h-100 shadow-sm">
+          {% if exp.title_image %}
+            <img src="{{ exp.title_image.url }}" class="card-img-top card-thumb" alt="{{ exp.title }}">
+          {% else %}
+            <img src="{% static 'images/placeholder.png' %}" class="card-img-top card-thumb" alt="placeholder">
+          {% endif %}
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ exp.title }}</h5>
+            {% if exp.company %}<h6 class="text-muted small">{{ exp.company }}</h6>{% endif %}
+            <p class="card-text mt-2">{{ exp.description|truncatewords:20 }}</p>
+            <div class="mt-auto">
+              <a href="{% url 'experience_detail' exp.pk %}" class="btn btn-outline-primary btn-sm">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <div class="col-12">
+        <p>No experiences added yet. Add them in the admin panel.</p>
+      </div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

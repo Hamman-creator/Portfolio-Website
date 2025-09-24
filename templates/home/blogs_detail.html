@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+
+  <!-- Blog Header -->
+  <div class="text-center mb-5">
+    <h1 class="display-4 fw-bold" style="color: var(--primary-color);">
+      {{ blog.title }}
+    </h1>
+    <p class="text-muted">
+      Published on {{ blog.created_at|date:"F j, Y" }}
+    </p>
+  </div>
+
+  <!-- Featured Image -->
+  <div class="text-center mb-5">
+    <img src="{{ blog.title_image.url }}" 
+         class="img-fluid rounded shadow" 
+         alt="{{ blog.title }}">
+  </div>
+
+  <!-- Blog Content -->
+  <div class="row justify-content-center">
+    <div class="col-lg-8">
+      <article class="mb-5" style="line-height: 1.8;">
+        <p class="fs-5">{{ blog.content|linebreaks }}</p>
+      </article>
+
+      <!-- Like Button -->
+      <div class="text-center mb-5">
+        <form method="POST" action="{% url 'like_blog' blog.pk %}">
+          {% csrf_token %}
+          {% if is_liked %}
+            <button type="submit" class="btn btn-danger btn-lg px-4">
+              💔 Unlike ({{ blog.likes }})
+            </button>
+          {% else %}
+            <button type="submit" class="btn btn-outline-success btn-lg px-4">
+              👍 Like ({{ blog.likes }})
+            </button>
+          {% endif %}
+        </form>
+      </div>
+
+      <!-- Divider -->
+      <hr class="my-5" style="border-top: 2px solid var(--primary-color);">
+
+      <!-- Comments Section -->
+      <h4 class="mb-4 fw-bold" style="color: var(--primary-color);">
+        Comments ({{ comments.count }})
+      </h4>
+
+      <div class="mb-5">
+        {% for comment in comments %}
+          <div class="border rounded p-3 mb-3 bg-light shadow-sm">
+            <strong>{{ comment.name }}</strong>
+            <small class="text-muted ms-2">
+              {{ comment.created_at|date:"F j, Y, g:i a" }}
+            </small>
+            <p class="mb-0 mt-2">{{ comment.text }}</p>
+          </div>
+        {% empty %}
+          <p>No comments yet. Be the first to comment!</p>
+        {% endfor %}
+      </div>
+
+      <!-- Comment Form -->
+      <h5 class="mb-3 fw-bold">Leave a Comment</h5>
+      <form method="POST" class="mb-5">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" name="comment_submit" class="btn btn-primary px-4">
+          Submit
+        </button>
+      </form>
+    </div>
+  </div>
+
+</section>
+{% endblock %}

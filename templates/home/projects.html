@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container py-5">
+  <h1 class="fw-bold mb-4">Projects</h1>
+  <div class="row g-4">
+    {% for project in projects %}
+      <div class="col-sm-6 col-md-4">
+        <div class="card h-100 shadow-sm">
+          <img src="{{ project.title_image.url }}" class="card-img-top card-thumb" alt="{{ project.title }}">
+          <div class="card-body d-flex flex-column">
+            <h5 class="card-title">{{ project.title }}</h5>
+            <p class="card-text">{{ project.description|truncatewords:20 }}</p>
+            <div class="mt-auto">
+              <a href="{% url 'project_detail' project.pk %}" class="btn btn-outline-primary btn-sm">Read More</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    {% empty %}
+      <p>No projects added yet.</p>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}

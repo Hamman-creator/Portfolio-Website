@@ -1,0 +1,85 @@
+/* --- Admin Header Bar --- */
+#header {
+    background-color: #000000; /* Black header */
+    color: #ffffff;
+    padding: 12px;
+}
+
+/* Header Links */
+#header a:link, #header a:visited {
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* --- Sidebar / Navigation --- */
+#content-related {
+    background-color: #F8F8F8; /* Match light gray background */
+    color: #000000;
+    border-radius: 8px;
+    padding: 10px;
+    border: 1px solid #e5e5e5;
+}
+
+/* Sidebar Links */
+#content-related a {
+    color: #000000;
+}
+
+#content-related a:hover {
+    color: #555555; /* Muted hover effect */
+}
+
+/* --- Buttons --- */
+.button, input[type=submit], .submit-row input.default {
+    background-color: #000000; /* Solid black buttons */
+    border: none;
+    color: #ffffff;
+    font-weight: bold;
+    padding: 6px 14px;
+    border-radius: 25px; /* Rounded pill buttons */
+    transition: background 0.3s ease;
+}
+
+.button:hover, input[type=submit]:hover {
+    background-color: #555555; /* Softer dark gray on hover */
+}
+
+/* --- Module Titles (like “Users”, “Groups”) --- */
+.module h2, .module caption {
+    background-color: #000000;
+    color: #ffffff;
+    padding: 5px;
+    font-size: 14px;
+}
+
+/* --- Table Headers --- */
+#changelist-form table thead th {
+    background-color: #000000;
+    color: #ffffff;
+    font-weight: bold;
+}
+
+/* --- Login Page Styling --- */
+body.login {
+    background-color: #F8F8F8;
+    color: #000000;
+}
+
+.login #header {
+    background: none;
+    text-align: center;
+    font-size: 18px;
+    color: #000000;
+}
+
+.login .submit-row input {
+    background-color: #000000;
+    border: none;
+    color: #ffffff;
+    border-radius: 25px;
+    padding: 8px 16px;
+}
+
+.login .submit-row input:hover {
+    background-color: #555555;
+}
