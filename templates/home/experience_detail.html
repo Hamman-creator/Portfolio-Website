@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+  <a href="{% url 'experience' %}" class="btn btn-link mb-3">&larr; Back to experiences</a>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <h1 class="fw-bold">{{ experience.title }}</h1>
+      {% if experience.company %}<h5 class="text-muted">{{ experience.company }}</h5>{% endif %}
+      <small class="text-secondary">
+        {{ experience.start_date|date:"F Y" }} — 
+        {% if experience.end_date %}{{ experience.end_date|date:"F Y" }}{% else %}Present{% endif %}
+      </small>
+
+      <div class="mt-3">
+        {% if experience.title_image %}
+          <img src="{{ experience.title_image.url }}" class="img-fluid rounded shadow mb-4" alt="{{ experience.title }}">
+        {% endif %}
+        <div class="lead">
+          {{ experience.description|linebreaks }}
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

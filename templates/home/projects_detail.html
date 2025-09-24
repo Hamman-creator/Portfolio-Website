@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="container py-5">
+  <a href="{% url 'projects' %}" class="btn btn-link mb-3">&larr; Back to projects</a>
+
+  <div class="row">
+    <div class="col-lg-8">
+      <h1>{{ project.title }}</h1>
+      <small class="text-muted">Published on {{ project.created_at|date:"F j, Y" }}</small>
+
+      <div class="mt-3">
+        <img src="{{ project.title_image.url }}" class="img-fluid rounded shadow mb-4" alt="{{ project.title }}">
+        <p>{{ project.content|linebreaks }}</p>
+      </div>
+
+      <!-- Technologies -->
+      {% if project.tech_list %}
+        <h5>Technologies Used</h5>
+        <div class="mb-3">
+          {% for tech in project.tech_list %}
+            <span class="badge bg-primary me-1">{{ tech }}</span>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <!-- Links -->
+      <div class="mt-3">
+        {% if project.github_link %}
+          <a href="{{ project.github_link }}" target="_blank" class="btn btn-dark me-2">GitHub</a>
+        {% endif %}
+        {% if project.live_demo_link %}
+          <a href="{{ project.live_demo_link }}" target="_blank" class="btn btn-success">Live Demo</a>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endblock %}

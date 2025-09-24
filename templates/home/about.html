@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5">
+  <div class="row align-items-center">
+    <!-- Left Column: Image -->
+    <div class="col-lg-5 text-center mb-4 mb-lg-0">
+      <img src="{% static 'images/487084964_2586498538221997_4344178612422794310_n.jpg' %}" 
+           alt="About Me Photo" 
+           class="img-fluid rounded-circle shadow-lg" 
+           style="max-width: 300px;">
+    </div>
+
+    <!-- Right Column: Bio -->
+    <div class="col-lg-7">
+      <h2 class="fw-bold mb-3">About Me</h2>
+      <p class="lead text-muted">
+        Hello, I’m <strong>Clintone Onyango Ondiek</strong>, a passionate 
+        <em>Lab Technologist & Quality Assurance Manager</em>.  
+        With years of hands-on experience in laboratory processes, 
+        I specialize in ensuring accuracy, safety, and excellence in all my work.  
+      </p>
+      <p>
+        Beyond the lab, I am deeply committed to continuous learning and personal growth.  
+        I enjoy collaborating with others, solving problems, and bringing innovative 
+        solutions that add real value.
+      </p>
+      <p>
+        When I’m not working, I spend time exploring new technologies, 
+        mentoring young professionals, and engaging in community initiatives.
+      </p>
+
+      <!-- CTA Button that triggers modal -->
+      <a href="#" class="btn btn-dark btn-lg rounded-pill px-4 mt-3" 
+         data-bs-toggle="modal" data-bs-target="#contactModal">
+        Get in Touch
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Reuse the same Bootstrap Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">Send Me a Message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="contactForm" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_name" class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required id="id_name">
+          </div>
+          <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" required id="id_email">
+          </div>
+          <div class="mb-3">
+            <label for="id_phone" class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" required id="id_phone">
+          </div>
+          <div class="mb-3">
+            <label for="id_message" class="form-label">Message</label>
+            <textarea name="message" class="form-control" rows="4" required id="id_message"></textarea>
+          </div>
+          <button type="submit" class="btn btn-dark w-100">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AJAX Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("contactForm");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault();
+
+    const formData = new FormData(form);
+
+    fetch("{% url 'contact' %}", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("Message sent successfully!");
+        form.reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+        modal.hide();
+      } else {
+        alert("Error: " + JSON.stringify(data.errors));
+      }
+    })
+    .catch(error => console.error("Error:", error));
+  });
+});
+</script>
+{% endblock %}

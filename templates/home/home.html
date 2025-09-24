@@ -1,0 +1,102 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<section class="container py-5 section-gradient">
+  <div class="row align-items-center">
+    
+    <!-- Left Column -->
+    <div class="col-lg-6 text-center text-lg-start mb-4 mb-lg-0">
+      <h1 class="fw-bold display-4">CLINTONE <br> ONYANGO <br> ONDIEK</h1>
+      <h4 class="fw-semibold">Lab Technologist <br> & Quality Assurance Manager</h4>
+      <p class="mt-3 text-muted">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+      </p>
+
+      <!-- Talk to Me button triggers modal -->
+      <a href="#" class="btn btn-dark btn-lg rounded-pill px-4" data-bs-toggle="modal" data-bs-target="#contactModal">
+        TALK TO ME
+      </a>
+
+      <!-- Contact Info -->
+      <div class="mt-4">
+        <p><i class="bi bi-telephone-fill me-2"></i> +123-456-7890</p>
+        <p><i class="bi bi-envelope-fill me-2"></i> hello@reallygreatsite.com</p>
+        <p><i class="bi bi-geo-alt-fill me-2"></i> 123 Anywhere ST., Any City, 12345</p>
+      </div>
+    </div>
+
+    <!-- Right Column -->
+    <div class="col-lg-6 text-center">
+      <img src="{% static 'images/487084964_2586498538221997_4344178612422794310_n.jpg' %}" alt="Handshake" class="img-fluid custom-img-shape">
+    </div>
+  </div>
+</section>
+
+<!-- Bootstrap Modal -->
+<div class="modal fade" id="contactModal" tabindex="-1" aria-labelledby="contactModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="contactModalLabel">Send Me a Message</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form id="contactForm" method="POST">
+          {% csrf_token %}
+          <div class="mb-3">
+            <label for="id_name" class="form-label">Name</label>
+            <input type="text" name="name" class="form-control" required id="id_name">
+          </div>
+          <div class="mb-3">
+            <label for="id_email" class="form-label">Email</label>
+            <input type="email" name="email" class="form-control" required id="id_email">
+          </div>
+          <div class="mb-3">
+            <label for="id_phone" class="form-label">Phone</label>
+            <input type="text" name="phone" class="form-control" required id="id_phone">
+          </div>
+          <div class="mb-3">
+            <label for="id_message" class="form-label">Message</label>
+            <textarea name="message" class="form-control" rows="4" required id="id_message"></textarea>
+          </div>
+          <button type="submit" class="btn btn-dark w-100">Send</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- AJAX Script -->
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.getElementById("contactForm");
+
+  form.addEventListener("submit", function(e) {
+    e.preventDefault(); // prevent normal form submit
+
+    const formData = new FormData(form);
+
+    fetch("{% url 'contact' %}", {
+      method: "POST",
+      body: formData,
+      headers: {
+        "X-Requested-With": "XMLHttpRequest"
+      }
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success) {
+        alert("Message sent successfully!");
+        form.reset();
+        const modal = bootstrap.Modal.getInstance(document.getElementById('contactModal'));
+        modal.hide();
+      } else {
+        alert("Error: " + JSON.stringify(data.errors));
+      }
+    })
+    .catch(error => console.error("Error:", error));
+  });
+});
+</script>
+{% endblock %}
